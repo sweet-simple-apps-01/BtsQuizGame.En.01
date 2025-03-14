@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTS Quiz</title>
+    <title>BTS Quiz Game | Sweet Simple Apps</title>
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
     <style>
         .container {
@@ -261,6 +261,8 @@
         }
 
         function playAgain() {
+            i = 0;
+            h3.innerHTML = `${i}/15`;
             currentQuestion = 0;
             score = 0;
             shuffle(quizData);
