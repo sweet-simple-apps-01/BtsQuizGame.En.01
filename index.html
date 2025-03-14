@@ -1,0 +1,278 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTS Quiz</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        .container {
+            font-family: 'Ubuntu', sans-serif;
+            text-align: center;
+            height: 60px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #d32f2f;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        #quiz-container {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 0 auto;
+            width: 90%;
+            max-width: 400px;
+            min-width: 250px;
+            border: 3px solid #4c5a98;
+        }
+        h3 {
+            margin: 0 0;
+        }
+        #question {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        hr {
+            font-family: 'Ubuntu', sans-serif;
+            height: 2px;
+            background: #4c5a98;
+            border-radius: 30px;
+        }
+        button {
+            display: block;
+            width: 100%;
+            background: #f8f8f8;
+            color: #323232;
+            border: 3px solid #4c5a98;
+            padding: 12px 12px;
+            margin: 8px 0;
+            border-radius: 30px;
+            font-size: 17px;
+            font-family: 'Ubuntu', sans-serif;
+            font-weight: bold;
+            transition: all 0.5s;
+        }
+        button:hover {
+            color: #000000;
+            background: #dfdfdf;
+            transform: scale(1.05);
+        }
+        .correct {
+            background: #55ff58 !important;
+        }
+        .wrong {
+            color: #ffffff !important;
+            background: red !important;
+        }
+        #current-score {
+            font-size: 18px;
+            margin-top: 15px;
+            color: #555;
+        }
+        #next-btn {
+            display: none;
+            background: #e0e0e0;
+        }
+        #next-btn:hover {
+            background: #c9c9c9;
+        }
+        .congratulations {
+            font-size: 24px;
+            color: #4caf50;
+            margin-top: 20px;
+            animation: fadeIn 1s ease-in-out infinite alternate;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        #congratulations {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            width: 90%;
+            max-width: 500px;
+            border: 3px solid #4caf50;
+            transition: all 0.5s ease-in-out;
+        }
+        #play-again-btn {
+            display: block;
+            width: 100%;
+            background: #4caf50;
+            color: #ffffff;
+            border: none;
+            padding: 12px;
+            margin: 50px 0 0 0;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            font-family: 'Ubuntu', sans-serif;
+            transition: all 0.5s;
+        }
+        #play-again-btn:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+       <h1>🎶 BTS Quiz 🎶</h1>
+
+       <div id="quiz-container">
+            <h3>1/15</h3>
+            <p id="question"></p> <hr>
+            <div id="options"></div>
+            <p id="current-score">Your Score: 0</p>
+            <button id="next-btn" onclick="nextQuestion()">Next Question</button>
+       </div>
+
+    <div id="congratulations" style="display:none;">
+        <p class="congratulations"><b>Congratulations</b></p>
+        <p id="final-score"></p>
+        <button id="play-again-btn" onclick="playAgain()">Play Again</button>
+    </div>
+    </div>
+
+    <script>
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        const quizData = [
+            { "question": "In which year did BTS debut?", "options": ["2010", "2013", "2015", "2017"], "answer": "2013" },
+            { "question": "Who is the leader of BTS?", "options": ["Suga", "RM", "V", "Jimin"], "answer": "RM" },
+            { "question": "Who is known as the ‘Golden Maknae’?", "options": ["Jin", "Jungkook", "Jimin", "V"], "answer": "Jungkook" },
+            { "question": "What is the name of BTS's first album?", "options": ["Wings", "Love Yourself", "2 Cool 4 Skool", "Map of the Soul"], "answer": "2 Cool 4 Skool" },
+            { "question": "What is the official fandom name of BTS?", "options": ["Blink", "ARMY", "Carat", "Once"], "answer": "ARMY" },
+            { "question": "Which country is BTS from?", "options": ["Japan", "China", "South Korea", "Thailand"], "answer": "South Korea" },
+            { "question": "Which song by BTS was the first to reach number 1 on the Billboard chart?", "options": ["DNA", "Boy With Luv", "Dynamite", "Butter"], "answer": "Dynamite" },
+            { "question": "Who is known as ‘Worldwide Handsome’?", "options": ["Jin", "Suga", "RM", "J-Hope"], "answer": "Jin" },
+            { "question": "Which BTS music video has the most views?", "options": ["DNA", "Dynamite", "Boy With Luv", "Butter"], "answer": "Dynamite" },
+            { "question": "How many members are in BTS?", "options": ["5", "6", "7", "8"], "answer": "7" },
+            { "question": "In which year did BTS debut?", options: ["2010", "2013", "2015", "2017"], answer: "2013" },
+            { "question": "Who is the leader of BTS?", options: ["Suga", "RM", "V", "Jimin"], answer: "RM" },
+            { "question": "Who is known as the ‘Golden Maknae’?", options: ["Jin", "Jungkook", "Jimin", "V"], answer: "Jungkook" },
+            { "question": "What is the name of BTS's first album?", options: ["Wings", "Love Yourself", "2 Cool 4 Skool", "Map of the Soul"], answer: "2 Cool 4 Skool" },
+            { "question": "What is the official fandom name of BTS?", options: ["Blink", "ARMY", "Carat", "Once"], answer: "ARMY" },
+            { "question": "Which country is BTS from?", options: ["Japan", "China", "South Korea", "Thailand"], answer: "South Korea" },
+            { "question": "Which song by BTS was the first to reach number 1 on the Billboard chart?", options: ["DNA", "Boy With Luv", "Dynamite", "Butter"], answer: "Dynamite" },
+            { "question": "Who is known as ‘Worldwide Handsome’?", options: ["Jin", "Suga", "RM", "J-Hope"], answer: "Jin" },
+            { "question": "Which BTS music video has the most views?", options: ["DNA", "Dynamite", "Boy With Luv", "Butter"], answer: "Dynamite" },
+            { "question": "How many members are in BTS?", options: ["5", "6", "7", "8"], answer: "7" },
+            { "question": "Who is the youngest member of BTS?", options: ["Jungkook", "V", "Jimin", "Jin"], answer: "Jungkook" },
+            { "question": "Which BTS member is known as ‘August D’?", options: ["RM", "Suga", "J-Hope", "Jin"], answer: "Suga" },
+            { "question": "Which artist featured in BTS's song ‘Boy With Luv’?", options: ["BLACKPINK", "Halsey", "Taylor Swift", "Ariana Grande"], answer: "Halsey" },
+            { "question": "What is the last part of the ‘Love Yourself’ album series?", options: ["Tear", "Answer", "Her", "Epiphany"], answer: "Answer" },
+            { "question": "Which BTS member loves sketching and painting?", options: ["RM", "V", "Jimin", "Jin"], answer: "V" },
+            { "question": "In which album was BTS's song 'Spring Day'?", options: ["Wings", "Love Yourself: Answer", "BE", "Map of the Soul"], answer: "Wings" },
+            { "question": "Which album is the song 'Fake Love' from?", options: ["Map of the Soul: 7", "Love Yourself: Tear", "BE", "Proof"], answer: "Love Yourself: Tear" },
+            { "question": "Which BTS album was the first to reach number 1 on the Billboard 200 chart?", options: ["Love Yourself: Tear", "Map of the Soul: 7", "BE", "Wings"], answer: "Love Yourself: Tear" },
+            { "question": "In which language was 'Film Out' sung?", options: ["Korean", "English", "Japanese", "Chinese"], answer: "Japanese" },
+            { "question": "In which album was BTS's 'Yet to Come' song?", options: ["BE", "Map of the Soul: 7", "Proof", "Love Yourself: Tear"], answer: "Proof" },
+            { "question": "Which song earned BTS their first Grammy nomination?", options: ["Butter", "Life Goes On", "Dynamite", "Boy With Luv"], answer: "Dynamite" },
+            { "question": "In which year did BTS give their first speech at the UN?", options: ["2017", "2018", "2019", "2020"], answer: "2018" },
+            { "question": "Which organization did BTS launch the 'Love Myself' campaign with?", options: ["UNICEF", "WHO", "UNDP", "UNESCO"], answer: "UNICEF" },
+            { "question": "Which country did BTS represent as a national ambassador?", options: ["South Korea", "Japan", "USA", "China"], answer: "South Korea" },
+            { "question": "Which BTS song stayed at number 1 on the Billboard Hot 100 chart for 10 weeks in 2021?", options: ["Boy With Luv", "Butter", "Dynamite", "Permission to Dance"], answer: "Butter" },
+            { "question": "Which BTS member acted in the drama 'Hwarang'?", options: ["RM", "Jin", "V", "Jimin"], answer: "V" },
+            { "question": "Which BTS member speaks French fluently?", options: ["RM", "J-Hope", "Jimin", "V"], answer: "V" },
+            { "question": "Which BTS member loves cooking the most?", options: ["Jin", "Suga", "Jimin", "J-Hope"], answer: "Jin" },
+            { "question": "Which BTS member always carries a notebook and pen with him?", options: ["RM", "V", "Jungkook", "Jin"], answer: "RM" },
+            { "question": "Which BTS member learned to play the guitar?", options: ["Suga", "J-Hope", "Jungkook", "RM"], answer: "Jungkook" }
+        ];
+
+        shuffle(quizData);
+
+        let selectedQuestions = quizData.slice(0, 15); // Get first 15 questions randomly selected
+        let currentQuestion = 0;
+        let score = 0;
+
+        function loadQuiz() {
+            let quiz = selectedQuestions[currentQuestion];
+            document.getElementById("question").innerText = quiz.question;
+            let optionsElement = document.getElementById("options");
+            optionsElement.innerHTML = "";
+
+            // Shuffle the options before displaying them
+            shuffle(quiz.options);
+
+            quiz.options.forEach(option => {
+                let button = document.createElement("button");
+                button.innerText = option;
+                button.onclick = () => checkAnswer(option, quiz.answer, button);
+                optionsElement.appendChild(button);
+            });
+
+            document.getElementById("next-btn").style.display = "none";
+        }
+        
+        h3 = document.querySelector("h3");
+        let i = 1;
+        document.getElementById("next-btn").addEventListener("click", ()=> {
+            i += 1;
+            if (i <= 15) {
+                h3.innerHTML = `${i}/15`;
+            }
+        }
+        )
+        
+        function checkAnswer(selected, correct, button) {
+            // Disable all buttons after an answer is selected
+            let buttons = document.querySelectorAll("#options button");
+            buttons.forEach(btn => btn.disabled = true);
+
+            if (selected === correct) {
+                button.classList.add("correct");
+                score++;
+                document.getElementById("current-score").innerText = `Your Score: ${score}`;
+            } else {
+                button.classList.add("wrong");
+                // Highlight the correct answer
+                buttons.forEach(btn => {
+                    if (btn.innerText === correct) {
+                        btn.classList.add("correct");
+                    }
+                });
+            }
+            document.getElementById("next-btn").style.display = "inline-block";
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < selectedQuestions.length) {
+                loadQuiz();
+            } else {
+                document.getElementById("quiz-container").style.display = "none";
+                document.getElementById("congratulations").style.display = "block";
+                document.getElementById("final-score").innerText = `Your Final Score: ${score}/${selectedQuestions.length}`;
+            }
+        }
+
+        function playAgain() {
+            currentQuestion = 0;
+            score = 0;
+            shuffle(quizData);
+            selectedQuestions = quizData.slice(0, 15);
+            document.getElementById("quiz-container").style.display = "block";
+            document.getElementById("congratulations").style.display = "none";
+            document.getElementById("current-score").innerText = "Your Score: 0";
+            loadQuiz();
+        }
+
+        loadQuiz();
+    </script>
+
+</body>
+</html>
